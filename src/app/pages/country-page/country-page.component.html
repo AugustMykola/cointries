@@ -1,0 +1,48 @@
+<div class="country-details">
+  <mat-card class="country-card">
+    <mat-card-header>
+      <mat-card-title>{{ country().commonName }}</mat-card-title>
+      <mat-card-subtitle>Region: {{ country().region }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p><strong>Official Name:</strong> {{ country().officialName }}</p>
+      <p><strong>Country Code:</strong> {{ country().countryCode }}</p>
+
+      <div *ngIf="country().borders && country().borders.length">
+        <p><strong>Borders:</strong></p>
+        <ul>
+          <li *ngFor="let border of country().borders">
+            {{ border.commonName }} ({{ border.countryCode }})
+          </li>
+        </ul>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <h2>Next Public Holidays</h2>
+
+  <div class="year-switcher">
+    <h3>Select Year for Holidays</h3>
+    <mat-form-field appearance="fill">
+      <mat-label>Year</mat-label>
+      <mat-select [(value)]="selectedYear" (selectionChange)="switchYear($event.value)">
+        <mat-option *ngFor="let year of years" [value]="year">
+          {{ year }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="holidays-list">
+    <mat-card *ngFor="let holiday of country().nextHolidays" class="holiday-card">
+      <mat-card-header>
+        <mat-card-title>{{ holiday.localName }}</mat-card-title>
+        <mat-card-subtitle>{{ holiday.date | date }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Holiday Name:</strong> {{ holiday.name }}</p>
+        <p><strong>Types:</strong> {{ convertHolidayTypes(holiday.types) }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
